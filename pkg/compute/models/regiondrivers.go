@@ -252,6 +252,8 @@ type IElasticcacheDriver interface {
 	RequestSyncElasticcacheStatus(ctx context.Context, userCred mcclient.TokenCredential, elasticcache *SElasticcache, task taskman.ITask) error
 
 	RequestRemoteUpdateElasticcache(ctx context.Context, userCred mcclient.TokenCredential, elasticcache *SElasticcache, replaceTags bool, task taskman.ITask) error
+
+	RequestRemoteUpdateElasticSearch(ctx context.Context, userCred mcclient.TokenCredential, elasticcache *SElasticSearch, replaceTags bool, task taskman.ITask) error
 }
 
 type IElasticcacheAccount interface {
