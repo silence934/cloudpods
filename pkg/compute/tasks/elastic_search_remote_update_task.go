@@ -49,6 +49,7 @@ func (self *ElasticSearchRemoteUpdateTask) OnInit(ctx context.Context, obj db.IS
 	self.SetStage("OnRemoteUpdateComplete", nil)
 	replaceTags := jsonutils.QueryBoolean(self.Params, "replace_tags", false)
 
+	//if err := region.GetDriver().RequestRemoteUpdateElasticSearch(ctx, self.GetUserCred(), es, replaceTags, self); err != nil {
 	if err := region.GetDriver().RequestRemoteUpdateElasticSearch(ctx, self.GetUserCred(), es, replaceTags, self); err != nil {
 		self.taskFail(ctx, es, jsonutils.NewString(err.Error()))
 	}
