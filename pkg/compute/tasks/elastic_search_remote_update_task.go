@@ -49,7 +49,6 @@ func (self *ElasticSearchRemoteUpdateTask) OnInit(ctx context.Context, obj db.IS
 	self.SetStage("OnRemoteUpdateComplete", nil)
 	replaceTags := jsonutils.QueryBoolean(self.Params, "replace_tags", false)
 
-	//if err := region.GetDriver().RequestRemoteUpdateElasticSearch(ctx, self.GetUserCred(), es, replaceTags, self); err != nil {
 	if err := region.GetDriver().RequestRemoteUpdateElasticSearch(ctx, self.GetUserCred(), es, replaceTags, self); err != nil {
 		self.taskFail(ctx, es, jsonutils.NewString(err.Error()))
 	}
@@ -64,10 +63,10 @@ func (self *ElasticSearchRemoteUpdateTask) OnRemoteUpdateCompleteFailed(ctx cont
 	self.taskFail(ctx, elasticcache, data)
 }
 
-func (self *ElasticSearchRemoteUpdateTask) OnSyncStatusComplete(ctx context.Context, elasticcache *models.SElasticcache, data jsonutils.JSONObject) {
+func (self *ElasticSearchRemoteUpdateTask) OnSyncStatusComplete(ctx context.Context, elasticcache *models.SElasticSearch, data jsonutils.JSONObject) {
 	self.SetStageComplete(ctx, nil)
 }
 
-func (self *ElasticSearchRemoteUpdateTask) OnSyncStatusCompleteFailed(ctx context.Context, elasticcache *models.SElasticcache, data jsonutils.JSONObject) {
+func (self *ElasticSearchRemoteUpdateTask) OnSyncStatusCompleteFailed(ctx context.Context, elasticcache *models.SElasticSearch, data jsonutils.JSONObject) {
 	self.SetStageFailed(ctx, data)
 }
