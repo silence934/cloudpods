@@ -658,6 +658,10 @@ func (es *SElasticSearch) PostUpdate(ctx context.Context, userCred mcclient.Toke
 	es.SVirtualResourceBase.PostUpdate(ctx, userCred, query, data)
 }
 
+func (self *SElasticSearch) StartSElasticSearchSyncTask(ctx context.Context, userCred mcclient.TokenCredential, parentTaskId string) error {
+	return StartResourceSyncStatusTask(ctx, userCred, self, "ElasticSearchSyncstatusTask", parentTaskId)
+}
+
 func (self *SElasticSearch) StartRemoteUpdateTask(ctx context.Context, userCred mcclient.TokenCredential, replaceTags bool, parentTaskId string) error {
 	data := jsonutils.NewDict()
 	if replaceTags {
