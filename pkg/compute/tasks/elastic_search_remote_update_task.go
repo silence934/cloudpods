@@ -55,7 +55,7 @@ func (self *ElasticSearchRemoteUpdateTask) OnInit(ctx context.Context, obj db.IS
 	}
 }
 
-func (self *ElasticSearchRemoteUpdateTask) OnRemoteUpdateComplete(ctx context.Context, elasticcache *models.SElasticcache, data jsonutils.JSONObject) {
+func (self *ElasticSearchRemoteUpdateTask) OnRemoteUpdateComplete(ctx context.Context, elasticcache *models.SElasticSearch, data jsonutils.JSONObject) {
 	self.SetStage("OnSyncStatusComplete", nil)
 	models.StartResourceSyncStatusTask(ctx, self.UserCred, elasticcache, "ElasticSearchRemoteUpdateTask", self.GetTaskId())
 }
