@@ -3251,15 +3251,11 @@ func (self *SManagedVirtualizationRegionDriver) RequestCreateNetwork(ctx context
 
 func (self *SManagedVirtualizationRegionDriver) RequestRemoteUpdateElasticSearch(ctx context.Context, userCred mcclient.TokenCredential, instance *models.SElasticSearch, replaceTags bool, task taskman.ITask) error {
 	taskman.LocalTaskRun(task, func() (jsonutils.JSONObject, error) {
-		log.Infof("RequestRemoteUpdateElasticSearchxxxxx")
 		ies, err := instance.GetIElasticSearch(ctx)
-		log.Infof("RequestRemoteUpdateElasticSearchxxxxx")
-		fmt.Println(fmt.Sprintf("GetIElasticSearch region:%v err:%v", ies, err))
 		if err != nil {
 			return nil, errors.Wrap(err, "instance.GetIESInstance")
 		}
 		oldTags, err := ies.GetTags()
-		fmt.Println(fmt.Sprintf("GetTags: oldTags:%v  err:%v", oldTags, err))
 		if err != nil {
 			if errors.Cause(err) == cloudprovider.ErrNotSupported || errors.Cause(err) == cloudprovider.ErrNotImplemented {
 				return nil, nil
