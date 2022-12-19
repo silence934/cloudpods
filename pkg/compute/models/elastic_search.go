@@ -658,16 +658,18 @@ func (es *SElasticSearch) PostUpdate(ctx context.Context, userCred mcclient.Toke
 	es.SVirtualResourceBase.PostUpdate(ctx, userCred, query, data)
 }
 
+func (self *SElasticSearch) StartSElasticSearchSyncTask(ctx context.Context, userCred mcclient.TokenCredential, parentTaskId string) error {
+	return StartResourceSyncStatusTask(ctx, userCred, self, "ElasticSearchSyncstatusTask", parentTaskId)
+}
+
 func (self *SElasticSearch) StartRemoteUpdateTask(ctx context.Context, userCred mcclient.TokenCredential, replaceTags bool, parentTaskId string) error {
 	data := jsonutils.NewDict()
 	if replaceTags {
 		data.Add(jsonutils.JSONTrue, "replace_tags")
 	}
 	if task, err := taskman.TaskManager.NewTask(ctx, "ElasticSearchRemoteUpdateTask", self, userCred, data, parentTaskId, "", nil); err != nil {
-		log.Infof("StartRemoteUpdateTask exec  error")
 		return errors.Wrap(err, "Start ElasticSearchRemoteUpdateTask")
 	} else {
-		log.Infof("StartRemoteUpdateTask exec  success")
 		self.SetStatus(userCred, api.ELASTIC_SEARCH_UPDATE_TAGS, "StartRemoteUpdateTask")
 		task.ScheduleRun(nil)
 	}
