@@ -1401,7 +1401,13 @@ func syncWafRegexSets(ctx context.Context, userCred mcclient.TokenCredential, sy
 func syncMongoDBs(ctx context.Context, userCred mcclient.TokenCredential, syncResults SSyncResultSet, provider *SCloudprovider, localRegion *SCloudregion, remoteRegion cloudprovider.ICloudRegion) error {
 	dbs, err := func() ([]cloudprovider.ICloudMongoDB, error) {
 		defer syncResults.AddRequestCost(MongoDBManager)()
-		return remoteRegion.GetICloudMongoDBs()
+		data, err := remoteRegion.GetICloudMongoDBs()
+		if err != nil {
+			log.Infof("GetICloudMongoDBs failed :%v", err)
+		} else {
+			log.Infof("GetICloudMongoDBs success :%v", err)
+		}
+		return data, err
 	}()
 	if err != nil {
 		msg := fmt.Sprintf("GetICloudMongoDBs for region %s failed %s", remoteRegion.GetName(), err)
