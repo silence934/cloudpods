@@ -17,7 +17,6 @@ package aliyun
 import (
 	"fmt"
 	"strings"
-
 	"yunion.io/x/jsonutils"
 	"yunion.io/x/pkg/errors"
 	"yunion.io/x/pkg/utils"
@@ -60,7 +59,7 @@ func (self *SRegion) ListTags(serviceType string, resourceType string, resourceI
 
 	if serviceType == ALIYUN_SERVICE_ES {
 		params["PathPattern"] = fmt.Sprintf("/openapi/tags")
-		params["ResourceIds"] = jsonutils.Marshal(resourceId).String()
+		params["ResourceIds"] = jsonutils.Marshal([]string{resourceId}).String()
 	} else {
 		params["ResourceId.1"] = resourceId
 	}
@@ -104,7 +103,7 @@ func (self *SRegion) UntagResource(serviceType string, resourceType string, resI
 
 	if serviceType == ALIYUN_SERVICE_ES {
 		params["PathPattern"] = fmt.Sprintf("/openapi/tags")
-		params["ResourceIds"] = jsonutils.Marshal(resId).String()
+		params["ResourceIds"] = jsonutils.Marshal([]string{resId}).String()
 		if keys != nil && len(keys) > 0 {
 			params["TagKeys"] = jsonutils.Marshal(keys).String()
 		}
@@ -173,14 +172,15 @@ func (self *SRegion) TagResource(serviceType string, resourceType string, resour
 	}
 
 	params := make(map[string]string)
-	params["RegionId"] = self.RegionId
-	params["ResourceType"] = resourceType
 
 	body := map[string]interface{}{}
 	if serviceType == ALIYUN_SERVICE_ES {
 		params["PathPattern"] = fmt.Sprintf("/openapi/tags")
 		body["ResourceIds"] = []string{resourceId}
+		body["ResourceType"] = resourceType
 	} else {
+		params["RegionId"] = self.RegionId
+		params["ResourceType"] = resourceType
 		params["ResourceId.1"] = resourceId
 	}
 
@@ -219,10 +219,9 @@ func (self *SRegion) TagResource(serviceType string, resourceType string, resour
 		}
 	}
 
-	action := "TagResources"
-	_, err := self.tagRequest(serviceType, action, params, body)
+	_, err := self.tagRequest(serviceType, "TagResources", params, body)
 	if err != nil {
-		return errors.Wrapf(err, "%s %s %s", action, resourceId, params)
+		return errors.Wrapf(err, "%s %s %s", "TagResources", resourceId, params)
 	}
 	return nil
 }
