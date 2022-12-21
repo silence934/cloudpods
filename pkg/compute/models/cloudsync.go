@@ -1775,7 +1775,6 @@ func syncPublicCloudProviderInfo(
 	remoteRegion cloudprovider.ICloudRegion,
 	syncRange *SSyncRange,
 ) error {
-	log.Infof("bug fix log  syncPublicCloudProviderInfo")
 	if syncRange != nil && len(syncRange.Region) > 0 && !utils.IsInStringArray(localRegion.Id, syncRange.Region) {
 		// no need to sync
 		return nil
@@ -1881,8 +1880,6 @@ func syncPublicCloudProviderInfo(
 		syncWafInstances(ctx, userCred, syncResults, provider, localRegion, remoteRegion)
 	}
 
-	log.Infof("bug fix log  cloudprovider.IsSupportMongoDB(driver):%v", cloudprovider.IsSupportMongoDB(driver))
-	log.Infof("bug fix log  syncRange.NeedSyncResource(cloudprovider.CLOUD_CAPABILITY_MONGO_DB):%v", syncRange.NeedSyncResource(cloudprovider.CLOUD_CAPABILITY_MONGO_DB))
 	if cloudprovider.IsSupportMongoDB(driver) && syncRange.NeedSyncResource(cloudprovider.CLOUD_CAPABILITY_MONGO_DB) {
 		syncMongoDBs(ctx, userCred, syncResults, provider, localRegion, remoteRegion)
 	}

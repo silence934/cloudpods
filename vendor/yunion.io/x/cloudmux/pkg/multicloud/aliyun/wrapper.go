@@ -37,5 +37,14 @@ func processCommonRequest(client *sdk.Client, req *requests.CommonRequest) (resp
 			err = errors.Error(jsonError.String())
 		}
 	}()
+
+	if req.ApiName == "DescribeDBInstances" {
+		response, err = client.ProcessCommonRequest(req)
+		if err != nil {
+			log.Infof("bug fix log err:%v", err)
+		}
+		return
+	}
+
 	return client.ProcessCommonRequest(req)
 }
