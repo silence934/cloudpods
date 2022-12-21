@@ -404,7 +404,6 @@ func (set SSyncResultSet) Add(manager db.IModelManager, result compare.SyncResul
 }
 
 func (self *SCloudproviderregion) DoSync(ctx context.Context, userCred mcclient.TokenCredential, syncRange SSyncRange) error {
-	log.Infof("bug fix log  DoSync")
 	syncResults := SSyncResultSet{}
 
 	localRegion, err := self.GetRegion()
@@ -464,7 +463,6 @@ func (self *SCloudproviderregion) getSyncTaskKey() string {
 
 func (self *SCloudproviderregion) submitSyncTask(ctx context.Context, userCred mcclient.TokenCredential, syncRange SSyncRange) {
 	self.markStartSync(userCred)
-	log.Infof("bug fix log  submitSyncTask")
 	RunSyncCloudproviderRegionTask(ctx, self.getSyncTaskKey(), func() {
 		ctx = context.WithValue(ctx, "provider-region", fmt.Sprintf("%d", self.RowId))
 		err := self.DoSync(ctx, userCred, syncRange)
