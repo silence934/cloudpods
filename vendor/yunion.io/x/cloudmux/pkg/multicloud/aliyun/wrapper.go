@@ -15,6 +15,7 @@
 package aliyun
 
 import (
+	"math/rand"
 	"runtime/debug"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
@@ -39,12 +40,12 @@ func processCommonRequest(client *sdk.Client, req *requests.CommonRequest) (resp
 	}()
 	client.GetReadTimeout()
 	if req.ApiName == "DescribeDBInstances" {
-		log.Infof("bug fix log RegionId:%v", req.RegionId)
-		log.Infof("bug fix log GetReadTimeout:%v", req.GetReadTimeout())
-		log.Infof("bug fix log GetConnectTimeout:%v", req.GetConnectTimeout())
+		i := rand.Intn(100)
+		log.Infof("bug fix log %d GetReadTimeout:%v", i, req.GetReadTimeout())
+		log.Infof("bug fix log %d GetConnectTimeout:%v", i, req.GetConnectTimeout())
 		response, err = client.ProcessCommonRequest(req)
 		if err != nil {
-			log.Infof("bug fix log err:%v", err)
+			log.Infof("bug fix log %d err:%v", i, err)
 		}
 		return
 	}

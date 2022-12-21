@@ -1403,9 +1403,9 @@ func syncMongoDBs(ctx context.Context, userCred mcclient.TokenCredential, syncRe
 		defer syncResults.AddRequestCost(MongoDBManager)()
 		data, err := remoteRegion.GetICloudMongoDBs()
 		if err != nil {
-			log.Infof("GetICloudMongoDBs failed :%v", err)
+			log.Infof("bug fix log GetICloudMongoDBs failed :%v", err)
 		} else {
-			log.Infof("GetICloudMongoDBs success :%v", err)
+			log.Infof("bug fix log GetICloudMongoDBs success :%v", err)
 		}
 		return data, err
 	}()
