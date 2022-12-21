@@ -1409,6 +1409,7 @@ func syncMongoDBs(ctx context.Context, userCred mcclient.TokenCredential, syncRe
 		}
 		return data, err
 	}()
+	log.Infof("bug fix log  syncMongoDBs")
 	if err != nil {
 		msg := fmt.Sprintf("GetICloudMongoDBs for region %s failed %s", remoteRegion.GetName(), err)
 		log.Errorf(msg)
@@ -1774,6 +1775,7 @@ func syncPublicCloudProviderInfo(
 	remoteRegion cloudprovider.ICloudRegion,
 	syncRange *SSyncRange,
 ) error {
+	log.Infof("bug fix log  syncPublicCloudProviderInfo")
 	if syncRange != nil && len(syncRange.Region) > 0 && !utils.IsInStringArray(localRegion.Id, syncRange.Region) {
 		// no need to sync
 		return nil
@@ -1880,6 +1882,7 @@ func syncPublicCloudProviderInfo(
 	}
 
 	if cloudprovider.IsSupportMongoDB(driver) && syncRange.NeedSyncResource(cloudprovider.CLOUD_CAPABILITY_MONGO_DB) {
+		log.Infof("bug fix log  syncMongoDBs")
 		syncMongoDBs(ctx, userCred, syncResults, provider, localRegion, remoteRegion)
 	}
 
