@@ -39,6 +39,7 @@ func processCommonRequest(client *sdk.Client, req *requests.CommonRequest) (resp
 	}()
 	client.GetReadTimeout()
 	if req.ApiName == "DescribeDBInstances" {
+		log.Infof("bug fix log RegionId:%v", req.RegionId)
 		log.Infof("bug fix log GetReadTimeout:%v", req.GetReadTimeout())
 		log.Infof("bug fix log GetConnectTimeout:%v", req.GetConnectTimeout())
 		response, err = client.ProcessCommonRequest(req)
