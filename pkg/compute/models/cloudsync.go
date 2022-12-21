@@ -1409,7 +1409,6 @@ func syncMongoDBs(ctx context.Context, userCred mcclient.TokenCredential, syncRe
 		}
 		return data, err
 	}()
-	log.Infof("bug fix log  syncMongoDBs")
 	if err != nil {
 		msg := fmt.Sprintf("GetICloudMongoDBs for region %s failed %s", remoteRegion.GetName(), err)
 		log.Errorf(msg)
