@@ -15,12 +15,12 @@
 package aliyun
 
 import (
-	"math/rand"
-	"runtime/debug"
-
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses"
+	"math/rand"
+	"runtime/debug"
+	"time"
 
 	"yunion.io/x/jsonutils"
 	"yunion.io/x/log"
@@ -41,6 +41,8 @@ func processCommonRequest(client *sdk.Client, req *requests.CommonRequest) (resp
 	client.GetReadTimeout()
 	if req.ApiName == "DescribeDBInstances" {
 		i := rand.Intn(100)
+		req.SetReadTimeout(1 * time.Minute)
+		req.SetConnectTimeout(1 * time.Minute)
 		log.Infof("bug fix log %d GetReadTimeout:%v", i, req.GetReadTimeout())
 		log.Infof("bug fix log %d GetConnectTimeout:%v", i, req.GetConnectTimeout())
 		response, err = client.ProcessCommonRequest(req)
