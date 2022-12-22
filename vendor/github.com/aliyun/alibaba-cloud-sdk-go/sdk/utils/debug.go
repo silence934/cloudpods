@@ -17,7 +17,7 @@ var hookPrint = func(input string) {
 }
 
 func Init(flag string) Debug {
-	enable := false
+	enable := true
 
 	env := hookGetEnv()
 	parts := strings.Split(env, ",")
