@@ -607,6 +607,7 @@ func (client *Client) DoActionWithSigner(request requests.AcsRequest, response r
 		putMsgToMap(fieldMap, httpRequest)
 		debug("> %s %s %s", httpRequest.Method, httpRequest.URL.RequestURI(), httpRequest.Proto)
 		debug("> Transport: %+v", client.httpClient.Transport)
+		debug("> proxy: %+v", proxy)
 		debug("> Host: %s", httpRequest.Host)
 		for key, value := range httpRequest.Header {
 			debug("> %s: %v", key, strings.Join(value, ""))
