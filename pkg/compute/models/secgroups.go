@@ -1136,7 +1136,30 @@ func (manager *SSecurityGroupManager) newFromCloudSecgroup(ctx context.Context, 
 		if err != nil {
 			return nil, nil, errors.Wrap(err, "db.FetchModelObjects")
 		}
+		cloudAccount, err := provider.GetCloudaccount()
+		if err != nil {
+			return nil, nil, errors.Wrapf(err, "provider.GetCloudaccount")
+		}
+		providerName := cloudAccount.Provider
 		for i := range secgroups {
+			secgroup := secgroups[i]
+			secgroupcaches := []SSecurityGroupCache{}
+			err = db.FetchModelObjects(SecurityGroupCacheManager, secgroup.GetSecgroupCacheQuery(), &secgroupcaches)
+			if err != nil {
+				return nil, nil, errors.Wrap(err, "db.FetchModelObjects")
+			}
+
+			i := 0
+			for ; i < len(secgroupcaches); i++ {
+				if secgroupcaches[i].GetProviderName() != providerName {
+					break
+				}
+			}
+			if i < len(secgroupcaches) {
+				//安全组下缓存列表中存在与provider不是一个平台的缓存列表
+				continue
+			}
+
 			src.Rules, err = secgroups[i].GetSecuritRuleSet()
 			if err != nil {
 				log.Warningf("GetSecuritRuleSet %s(%s) error: %v", secgroups[i].Name, secgroups[i].Id, err)
