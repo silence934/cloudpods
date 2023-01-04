@@ -18,6 +18,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"gopkg.in/fatih/set.v0"
 
@@ -414,7 +415,9 @@ func (self *SInterVpcNetwork) SyncWithCloudInterVpcNetwork(ctx context.Context, 
 	_, err := db.Update(self, func() error {
 		self.ExternalId = ext.GetGlobalId()
 		self.Status = ext.GetStatus()
-		self.Name = ext.GetName()
+		if options.EnableSyncName {
+			self.Name = ext.GetName()
+		}
 		return nil
 	})
 	if err != nil {

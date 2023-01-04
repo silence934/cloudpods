@@ -16,6 +16,7 @@ package models
 
 import (
 	"context"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 	"yunion.io/x/jsonutils"
@@ -173,7 +174,9 @@ func (self *SSkuResourcesMeta) GetWafGroups(cloudEnv string) ([]SWafRuleGroup, e
 
 func (self *SWafRuleGroup) syncWithCloudSku(ctx context.Context, userCred mcclient.TokenCredential, ext sWafGroup) error {
 	_, err := db.Update(self, func() error {
-		self.Name = ext.Name
+		if options.EnableSyncName {
+			self.Name = ext.Name
+		}
 		self.Description = ext.Description
 		self.IsPublic = true
 		self.Status = api.WAF_RULE_GROUP_STATUS_AVAILABLE

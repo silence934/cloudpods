@@ -244,7 +244,9 @@ func (self *SExternalProject) SyncWithCloudProject(ctx context.Context, userCred
 		providerMaps[provider.Account] = provider.Id
 	}
 	diff, err := db.UpdateWithLock(ctx, self, func() error {
-		self.Name = ext.GetName()
+		if options.EnableSyncName {
+			self.Name = ext.GetName()
+		}
 		self.IsEmulated = ext.IsEmulated()
 		self.Status = ext.GetStatus()
 		if accountId := ext.GetAccountId(); len(accountId) > 0 {

@@ -476,7 +476,7 @@ func (self *SCloudregion) syncWithCloudRegion(ctx context.Context, userCred mccl
 	}
 
 	diff, err := db.UpdateWithLock(ctx, self, func() error {
-		if !utils.IsInStringArray(self.Provider, api.PRIVATE_CLOUD_PROVIDERS) {
+		if !utils.IsInStringArray(self.Provider, api.PRIVATE_CLOUD_PROVIDERS) && options.EnableSyncName {
 			self.Name = cloudRegion.GetName()
 		}
 		self.Status = cloudRegion.GetStatus()

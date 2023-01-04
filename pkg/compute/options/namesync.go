@@ -24,6 +24,8 @@ var (
 	NameSyncResources stringutils2.SSortedStrings
 
 	SyncPurgeRemovedResources stringutils2.SSortedStrings
+
+	EnableSyncName bool
 )
 
 func InitNameSyncResources() {
@@ -32,4 +34,8 @@ func InitNameSyncResources() {
 
 	SyncPurgeRemovedResources = stringutils2.NewSortedStrings(Options.SyncPurgeRemovedResources)
 	log.Infof("SyncPurgeRemovedResources: %s", SyncPurgeRemovedResources)
+
+	EnableSyncName = Options.EnableSyncName
+	log.Infof("EnableSyncName: %s", EnableSyncName)
+
 }

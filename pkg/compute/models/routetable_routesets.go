@@ -17,6 +17,7 @@ package models
 import (
 	"context"
 	"database/sql"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 	"yunion.io/x/jsonutils"
@@ -359,7 +360,9 @@ func (self *SRouteTableRouteSet) syncWithCloudRouteSet(ctx context.Context, user
 	}
 
 	diff, err := db.UpdateWithLock(ctx, self, func() error {
-		self.Name = cloudRouteSet.GetName()
+		if options.EnableSyncName {
+			self.Name = cloudRouteSet.GetName()
+		}
 		self.Status = cloudRouteSet.GetStatus()
 		self.Type = cloudRouteSet.GetType()
 		self.Cidr = cloudRouteSet.GetCidr()

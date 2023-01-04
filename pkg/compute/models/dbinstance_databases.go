@@ -17,6 +17,7 @@ package models
 import (
 	"context"
 	"database/sql"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 	"yunion.io/x/jsonutils"
@@ -406,7 +407,9 @@ func (manager *SDBInstanceDatabaseManager) SyncDBInstanceDatabases(ctx context.C
 func (self *SDBInstanceDatabase) SyncWithCloudDBInstanceDatabase(ctx context.Context, userCred mcclient.TokenCredential, instance *SDBInstance, extDatabase cloudprovider.ICloudDBInstanceDatabase) error {
 	_, err := db.UpdateWithLock(ctx, self, func() error {
 		self.Status = extDatabase.GetStatus()
-		self.Name = extDatabase.GetName()
+		if options.EnableSyncName {
+			self.Name = extDatabase.GetName()
+		}
 		self.CharacterSet = extDatabase.GetCharacterSet()
 
 		return nil

@@ -16,6 +16,7 @@ package models
 
 import (
 	"context"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 	"yunion.io/x/jsonutils"
@@ -252,7 +253,9 @@ func (self *SCloudregion) SyncModelartsPoolSkus(ctx context.Context, userCred mc
 
 func (self *SModelartsPoolSku) syncWithCloudSku(ctx context.Context, userCred mcclient.TokenCredential, isku cloudprovider.ICloudModelartsPoolSku) error {
 	_, err := db.Update(self, func() error {
-		self.Name = isku.GetName()
+		if options.EnableSyncName {
+			self.Name = isku.GetName()
+		}
 		self.CpuCount = isku.GetCpuCoreCount()
 		self.CpuArch = isku.GetCpuArch()
 		self.Status = isku.GetStatus()

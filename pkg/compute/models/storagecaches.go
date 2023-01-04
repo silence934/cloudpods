@@ -19,6 +19,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"github.com/serialx/hashring"
 
@@ -256,7 +257,9 @@ func (manager *SStoragecacheManager) newFromCloudStoragecache(ctx context.Contex
 
 func (self *SStoragecache) syncWithCloudStoragecache(ctx context.Context, userCred mcclient.TokenCredential, cloudCache cloudprovider.ICloudStoragecache, provider *SCloudprovider) error {
 	diff, err := db.UpdateWithLock(ctx, self, func() error {
-		self.Name = cloudCache.GetName()
+		if options.EnableSyncName {
+			self.Name = cloudCache.GetName()
+		}
 
 		self.Path = cloudCache.GetPath()
 

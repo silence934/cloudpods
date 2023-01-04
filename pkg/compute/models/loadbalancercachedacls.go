@@ -17,6 +17,7 @@ package models
 import (
 	"context"
 	"fmt"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 	"yunion.io/x/jsonutils"
@@ -218,7 +219,7 @@ func (self *SCachedLoadbalancerAcl) syncRemoveCloudLoadbalanceAcl(ctx context.Co
 func (acl *SCachedLoadbalancerAcl) SyncWithCloudLoadbalancerAcl(ctx context.Context, userCred mcclient.TokenCredential, extAcl cloudprovider.ICloudLoadbalancerAcl, projectId mcclient.IIdentityProvider) error {
 	diff, err := db.UpdateWithLock(ctx, acl, func() error {
 		// todo: 华为云acl没有name字段应此不需要同步名称
-		if !utils.IsInStringArray(acl.GetProviderName(), []string{api.CLOUD_PROVIDER_HUAWEI, api.CLOUD_PROVIDER_HCSO, api.CLOUD_PROVIDER_HCS}) {
+		if options.EnableSyncName && !utils.IsInStringArray(acl.GetProviderName(), []string{api.CLOUD_PROVIDER_HUAWEI, api.CLOUD_PROVIDER_HCSO, api.CLOUD_PROVIDER_HCS}) {
 			acl.Name = extAcl.GetName()
 		}
 		return nil

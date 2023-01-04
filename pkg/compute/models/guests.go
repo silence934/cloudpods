@@ -2845,7 +2845,7 @@ func (self *SGuest) syncWithCloudVM(ctx context.Context, userCred mcclient.Token
 	}
 
 	diff, err := db.UpdateWithLock(ctx, self, func() error {
-		if options.NameSyncResources.Contains(self.Keyword()) && !recycle {
+		if options.EnableSyncName && !recycle {
 			newName, _ := db.GenerateAlterName(self, extVM.GetName())
 			if len(newName) > 0 && newName != self.Name {
 				self.Name = newName

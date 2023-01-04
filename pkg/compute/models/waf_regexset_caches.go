@@ -17,6 +17,7 @@ package models
 import (
 	"context"
 	"fmt"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 	"yunion.io/x/jsonutils"
@@ -248,7 +249,9 @@ func (self *SWafRegexSetCache) GetICloudWafRegexSet(ctx context.Context) (cloudp
 func (self *SWafRegexSetCache) syncWithCloudRegexSet(ctx context.Context, userCred mcclient.TokenCredential, ext cloudprovider.ICloudWafRegexSet) error {
 	_, err := db.Update(self, func() error {
 		self.Status = api.WAF_IPSET_STATUS_AVAILABLE
-		self.Name = ext.GetName()
+		if options.EnableSyncName {
+			self.Name = ext.GetName()
+		}
 		self.Description = ext.GetDesc()
 		return nil
 	})

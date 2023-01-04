@@ -18,6 +18,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 	"yunion.io/x/jsonutils"
@@ -372,7 +373,9 @@ func (self *SSecurityGroupCache) GetSecgroup() (*SSecurityGroup, error) {
 func (self *SSecurityGroupCache) SyncBaseInfo(ctx context.Context, userCred mcclient.TokenCredential, ext cloudprovider.ICloudSecurityGroup) error {
 	_, err := db.Update(self, func() error {
 		self.Status = api.SECGROUP_CACHE_STATUS_READY
-		self.Name = ext.GetName()
+		if options.EnableSyncName {
+			self.Name = ext.GetName()
+		}
 		self.Description = ext.GetDescription()
 		self.ExternalProjectId = ext.GetProjectId()
 		references, err := ext.GetReferences()

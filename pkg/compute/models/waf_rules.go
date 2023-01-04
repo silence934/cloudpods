@@ -16,6 +16,7 @@ package models
 
 import (
 	"context"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 	"yunion.io/x/jsonutils"
@@ -400,7 +401,9 @@ func (self *SWafRule) SyncWithCloudRule(ctx context.Context, userCred mcclient.T
 		self.StatementConditon = rule.GetStatementCondition()
 		self.Priority = rule.GetPriority()
 		self.Status = api.WAF_RULE_STATUS_AVAILABLE
-		self.Name = rule.GetName()
+		if options.EnableSyncName {
+			self.Name = rule.GetName()
+		}
 		self.ExternalId = rule.GetGlobalId()
 		return nil
 	})

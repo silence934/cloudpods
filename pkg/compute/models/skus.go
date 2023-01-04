@@ -1144,7 +1144,9 @@ func (self *SServerSku) syncWithCloudSku(ctx context.Context, userCred mcclient.
 		self.InstanceTypeCategory = extSku.InstanceTypeCategory
 		self.PrepaidStatus = extSku.PrepaidStatus
 		self.PostpaidStatus = extSku.PostpaidStatus
-		self.Name = extSku.GetName()
+		if options.EnableSyncName {
+			self.Name = extSku.GetName()
+		}
 		self.CpuArch = extSku.CpuArch
 		self.SysDiskType = extSku.SysDiskType
 		self.DataDiskTypes = extSku.DataDiskTypes

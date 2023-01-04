@@ -688,7 +688,9 @@ func (self *SDnsRecordSet) GetDnsZone() (*SDnsZone, error) {
 
 func (self *SDnsRecordSet) syncWithCloudDnsRecord(ctx context.Context, userCred mcclient.TokenCredential, provider string, ext cloudprovider.DnsRecordSet) error {
 	diff, err := db.Update(self, func() error {
-		self.Name = ext.DnsName
+		if options.EnableSyncName {
+			self.Name = ext.DnsName
+		}
 		self.Enabled = tristate.NewFromBool(ext.Enabled)
 		self.Status = ext.Status
 		self.TTL = ext.Ttl

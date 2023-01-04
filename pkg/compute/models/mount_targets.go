@@ -17,6 +17,7 @@ package models
 import (
 	"context"
 	"fmt"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 	"yunion.io/x/jsonutils"
@@ -439,7 +440,9 @@ func (self *SFileSystem) SyncMountTargets(ctx context.Context, userCred mcclient
 func (self *SMountTarget) SyncWithMountTarget(ctx context.Context, userCred mcclient.TokenCredential, managerId string, m cloudprovider.ICloudMountTarget) error {
 	_, err := db.Update(self, func() error {
 		self.Status = m.GetStatus()
-		self.Name = m.GetName()
+		if options.EnableSyncName {
+			self.Name = m.GetName()
+		}
 		self.DomainName = m.GetDomainName()
 		self.ExternalId = m.GetGlobalId()
 		if groupId := m.GetAccessGroupId(); len(groupId) > 0 {

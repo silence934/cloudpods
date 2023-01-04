@@ -17,6 +17,7 @@ package models
 import (
 	"context"
 	"time"
+	"yunion.io/x/onecloud/pkg/compute/options"
 
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 	"yunion.io/x/jsonutils"
@@ -206,7 +207,9 @@ func (self *SCDNDomain) GetICloudCDNDomain(ctx context.Context) (cloudprovider.I
 
 func (self *SCDNDomain) SyncWithCloudCDNDomain(ctx context.Context, userCred mcclient.TokenCredential, ext cloudprovider.ICloudCDNDomain) error {
 	diff, err := db.UpdateWithLock(ctx, self, func() error {
-		self.Name = ext.GetName()
+		if options.EnableSyncName {
+			self.Name = ext.GetName()
+		}
 		self.Status = ext.GetStatus()
 		self.Area = ext.GetArea()
 		self.ServiceType = ext.GetServiceType()
